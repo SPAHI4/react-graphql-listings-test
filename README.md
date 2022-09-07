@@ -64,3 +64,7 @@ The final project will be assessed on:
 * Code Quality: Is the additional code well-written and easy to understand?
 * Testing/Documentation: Are the more complex parts of the app properly tested and documented?
 * Performance: Does the application work reasonably fast? (You don't have to optimize it, but it should operate without any significant lag)
+
+## Data
+
+The data for AirBnB listings was provided by [Inside AirBnB](http://insideairbnb.com/get-the-data/) licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). The data was adapted by removing extra columns and only taking a limited set of rows from the CSV.
