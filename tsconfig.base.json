@@ -8,6 +8,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "allowJs": true,
+    "skipLibCheck": true
   }
 }

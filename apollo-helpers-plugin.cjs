@@ -68,7 +68,6 @@ function generateTypePoliciesSignature(schema, config) {
             .join('\n')
             // fixes issue with incorrect casing in our schema
             .replace(new RegExp(`GraphQLTypes\\.(${Object.keys(incorrectTypes).join('|')})`, 'g'), 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         (match, p1) => `GraphQLTypes.${incorrectTypes[p1]}`),
     };
 }

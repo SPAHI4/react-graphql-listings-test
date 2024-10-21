@@ -7,8 +7,10 @@
   "type": "module",
   "scripts": {
     "predev": "pnpm --filter backend docker:up",
+    "check": "tsc --noEmit",
     "dev": "pnpm --stream -r run dev",
     "test": "vitest",
+    "lint": "eslint .",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "devDependencies": {

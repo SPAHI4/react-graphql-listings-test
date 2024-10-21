@@ -8,13 +8,13 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import eslintJest from 'eslint-plugin-jest';
 
 export default tseslint.config(
-  { ignores: ['**/dist'] },
+  { ignores: ['**/dist', '**/__generated__'] },
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   eslintPluginPrettierRecommended,
   {
-    files: ['**/*.{js,ts,jsx,tsx}'],
+    files: ['**/*.{js,ts,jsx,tsx,cjs,mjs}'],
     languageOptions: {
       ecmaVersion: 2020,
       parser: tseslint.parser,

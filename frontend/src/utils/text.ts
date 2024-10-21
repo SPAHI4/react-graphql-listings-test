@@ -3,10 +3,5 @@ export function truncateDescription(str: string, length: number): string {
     return str;
   }
   const trimmedString = str.substring(0, length);
-  return (
-    trimmedString.substring(
-      0,
-      Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
-    ) + '...'
-  );
+  return trimmedString.substring(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))) + '...';
 }

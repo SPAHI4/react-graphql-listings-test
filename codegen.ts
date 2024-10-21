@@ -6,15 +6,7 @@ const config: CodegenConfig = {
   generates: {
     // Backend configuration
     'backend/src/__generated__/graphql.ts': {
-      plugins: [
-        'typescript',
-        'typescript-resolvers',
-        {
-          add: {
-            content: `/* eslint-disable */ \n`,
-          },
-        },
-      ],
+      plugins: ['typescript', 'typescript-resolvers'],
       config: {
         useIndexSignature: true,
         contextType: '../schema/context.js#GraphQLContext',
@@ -25,14 +17,7 @@ const config: CodegenConfig = {
     'frontend/src/__generated__/': {
       documents: 'frontend/src/**/*.tsx',
       preset: 'client',
-      plugins: [
-        {
-          add: {
-            content: `/* eslint-disable */ \n`,
-          },
-        },
-        'typescript',
-      ],
+      plugins: ['typescript'],
       presetConfig: {
         gqlTagName: 'gql',
       },
@@ -40,14 +25,7 @@ const config: CodegenConfig = {
 
     // generate type policies for apollo client
     'frontend/src/__generated__/apollo-helpers.ts': {
-      plugins: [
-        {
-          add: {
-            content: `/* eslint-disable */ \n`,
-          },
-        },
-        'apollo-helpers-plugin.cjs',
-      ],
+      plugins: ['apollo-helpers-plugin.cjs'],
       config: {
         requireKeyFields: false,
       },
