@@ -1,0 +1,43 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+  extensions      = [pg_trgm]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Listing {
+  id                           String  @id
+  listing_url                  String
+  name                         String
+  description                  String
+  picture_url                  String
+  host_id                      Int
+  host_response_time           String?
+  neighbourhood                String
+  neighbourhood_cleansed       String
+  neighbourhood_group_cleansed String?
+  latitude                     Float
+  longitude                    Float
+  room_type                    String
+  accommodates                 Int
+  bedrooms                     Int?
+  beds                         Int?
+  amenities                    String?
+  price                        Float
+  number_of_reviews            Int
+  review_scores_rating         Float?
+  review_scores_accuracy       Float?
+  review_scores_cleanliness    Float?
+  review_scores_checkin        Float?
+  review_scores_communication  Float?
+  review_scores_location       Float?
+  review_scores_value          Float?
+  reviews_per_month            Float?
+
+  @@index([neighbourhood_cleansed, review_scores_location]) // for aggregation
+  @@index([name(ops: raw("gin_trgm_ops")), description(ops: raw("gin_trgm_ops")), neighbourhood_cleansed(ops: raw("gin_trgm_ops"))], type: Gin)
+}

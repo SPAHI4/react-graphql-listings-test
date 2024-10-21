@@ -3,30 +3,29 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "docker:up": "docker-compose up -d",
+    "prisma:migrate": "prisma migrate dev --preview-feature",
+    "init-db": "pnpm docker:up && prisma migrate dev && prisma db seed",
+    "prisma:studio": "prisma studio",
+    "start": "tsx src",
+    "dev": "tsx --watch src"
+  },
   "devDependencies": {
-    "@types/jest": "^29.0.0",
-    "@types/node": "^18.7.14",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
-    "eslint": "^8.23.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jest": "^27.0.1",
-    "prettier": "^2.7.1",
-    "ts-jest": "^28.0.8",
-    "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.8.2"
+    "@types/node": "^22.7.6",
+    "tsx": "^4.19.1"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@graphql-yoga/node": "^2.13.12",
+    "@prisma/client": "5.21.1",
     "csv-parse": "^5.3.0",
-    "graphql": "^16.6.0",
-    "jest": "^28.0.0"
-  },
-  "scripts": {
-    "start": "ts-node src",
-    "dev": "ts-node-dev --rs --transpile-only --respawn src",
-    "lint": "eslint --ext .ts,.js. .",
-    "test": "jest"
+    "dataloader": "^2.2.2",
+    "graphql": "^16.9.0",
+    "graphql-fields": "^2.0.3",
+    "prisma": "^5.21.1"
   }
 }

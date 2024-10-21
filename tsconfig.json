@@ -1,0 +1,9 @@
+{
+  "files": ["eslint.config.js", "codegen.ts", "vitest.workspace.ts"],
+  "extends": "./tsconfig.base.json",
+  "references": [
+    { "path": "./frontend/tsconfig.app.json" },
+    { "path": "./frontend/tsconfig.node.json" },
+    { "path": "./backend" }
+  ]
+}

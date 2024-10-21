@@ -1,9 +1,20 @@
 import { createServer, useErrorHandler } from '@graphql-yoga/node';
-import { resolvers, typeDefs } from './schema';
 
-const server = createServer({
+import * as listingType from './modules/Listing/index.js';
+import { GraphQLContext } from './schema/context.js';
+import { prisma } from './services/prisma.js';
+import { createNeighborhoodScoreLoader } from './modules/Listing/loaders.js';
+
+const server = createServer<GraphQLContext>({
   port: 4001,
-  schema: { typeDefs, resolvers },
+  schema: {
+    resolvers: [listingType.resolvers],
+    typeDefs: [listingType.typeDefs],
+  },
+  context: () => ({
+    prisma,
+    neighborhoodScoreLoader: createNeighborhoodScoreLoader(prisma),
+  }),
   maskedErrors: false,
   plugins: [
     useErrorHandler((errors) => {

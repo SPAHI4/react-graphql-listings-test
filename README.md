@@ -1,70 +1,43 @@
-# Airbnb Listings Explorer
+# Run the project
+1. Start docker
+2. 
+```bash
+$ corepack enable pnpm # if you don't have pnpm installed
+$ pnpm install
+$ pnpm --filter backend docker:up
+```
+3.
+```bash
+$ pnpm --filter backend init-db
+$ pnpm dev
+```
+## test
+```bash
+pnpm test
+```
 
-Inside this repo is the skeleton of a simple web app that can serve up a local DB of listings from AirBnB. The goal is to build a way to search the listings and provide additional information for the average rating of the neighborhood.
+# My steps:
 
-## Repository Design
+## Tools setup
+- set up a monorepo instead of two separate repos, used pnpm as a package manager
+- set up upgraded eslint with a flat configuration which suits a monorepo, used recommended type checking rules
+- set up upgraded typescript with referenced projects which suits a monorepo
+- replaced CRA with vite
+- set up vitest which is a superior to jest with workspaces support
+- Most important: set up `graphql-codegen`, as we have graphql in the project, it's a must to have types generated for both client and server
 
-### Backend
+## Backend
+- I was told that Prisma is preferred, so I installed it and set up the database. I chose Postgres, so I added docker-compose as well
+- Added indexes: `gin` index for the search and `btree` index for the neighborhood score, even though query planner won't use them for a data set of this size
+- Used DataLoader for `neighborhood_score` resolver, so it doesn't make a separate query for each listing
+  - Alternative 1: within a single query with `prisma.$queryRaw` (not type safe, no lazy loading, almost the same performance)
+  - Alternative 2: view/materialized view (more complex; materialized views are not supported by Prisma so it would be a normal table (model) updated periodically, but it is the most efficient way)
+- Added a couple unit tests for the resolvers and utils
 
-The backend repo is a barebones GraphQL server that you can add new types and fields as necessary.
-
-The `data/db.ts` contains a mock DB that loads data from a CSV file. The entire `db` directory should not need to be modified.
-
-The `services/` directory contains the business logic that interacts with the DB. Feel free to modify this as needed.
-
-The `schema/` directory contains the GraphQL schema that the client interacts with.
-
-### Frontend
-
-The frontend is a standard Create React App set up with Apollo Client.
-
-The `pages/Listings.page.tsx/css` should be the main file you need to interact with to add the business logic.
-
-In `types/listings.ts`, you have the basic Typescript type for the Listing.
-
-## Instructions
-
-Please implement the following additions to the application. Look at `screenshot.png` for an idea of what the final product should look like.
-
-Add unit tests where reasonable (you don't need to test everything - just the more complex logic)
-
-This project should take between 1-2 hours and if it takes longer, just write up what you would have done to finish it.
-
-### 0. Set up
-
-1. Run `yarn install` on backend / frontend modules
-2. Run backend server with `yarn dev`
-3. Run frontend React app with `yarn start`
-
-### 1. Style cards
-
-First, we want to style the listings so they look a bit better. We'd like to format them into a list of cards that we can view in a more succinct format. See `screenshot.png` for an idea of what it should look like. You don't need to be make it look pixel-perfect but just get the general style.
-
-### 2. Add instant search
-
-We'd like to add a search box so we can search for listings by their name, description, or neighbourhood (case-insensitive). However, we don't want to do the search on the client-side since it would require downloading the entire DB. Therefore, we'd like to extend our GraphQL listings query to support filtering by a query and hook it up to our search box.
-
-See `screenshot_with_search.png`.
-
-Note: You may want to consider throttling the requests so every key down doesn't trigger another query.
-
-### 3. Add support for neighborhood score
-
-We'd like to compute the neighbourhood score of each neighbourhood and attach it to the listing so we can get an idea of how people rated the neigbourhood.
-
-To get the neighbourhood score, we will compute the average `review_scores_location` of each listing in the same neighbourhood of the listing (note: not all listings have a `review_scores_location`). If there are fewer than 5 listings, we will show "N/A" to signify we don't have enough data.
-
-This data will then be piped to the cards (as seen in `screenshot.png`)
-
-## Assessment Criteria
-
-The final project will be assessed on:
-
-* Functionality: Does the application work without any bugs?
-* Code Quality: Is the additional code well-written and easy to understand?
-* Testing/Documentation: Are the more complex parts of the app properly tested and documented?
-* Performance: Does the application work reasonably fast? (You don't have to optimize it, but it should operate without any significant lag)
-
-## Data
-
-The data for AirBnB listings was provided by [Inside AirBnB](http://insideairbnb.com/get-the-data/) licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). The data was adapted by removing extra columns and only taking a limited set of rows from the CSV.
+## Frontend
+- I was told that Chakra UI is preferred, so I installed it
+- Used Apollo Client for fetching data
+- No throttling was implemented for the search, built-in `useDeferredValue` handles UI updates properly
+- Implemented pagination in Apollo type policies. Used `fetchMore` for fetching more data. Pagination is the same as in the original project, which uses `limit` and `offset` for fetching data. 
+As an alternative, I would use Relay style (cursor-based pagination), there is a ready solution for that in both Apollo Client and Prisma (third-party library)
+- Added a unit test for the listings page
