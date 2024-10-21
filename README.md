@@ -27,7 +27,7 @@ pnpm test
 - Most important: set up `graphql-codegen`, as we have graphql in the project, it's a must to have types generated for both client and server
 
 ## Backend
-- I was told that Prisma is preferred, so I installed it and set up the database. I chose Postgres, so I added docker-compose as well
+- I was told that Prisma is preferred, so I installed it and set up the database. I chose Postgres, so I added docker-compose as well. Data from the csv file was imported to the database.
 - Added indexes: `gin` index for the search and `btree` index for the neighborhood score, even though query planner won't use them for a data set of this size
 - Used DataLoader for `neighborhood_score` resolver, so it doesn't make a separate query for each listing
   - Alternative 1: within a single query with `prisma.$queryRaw` (not type safe, no lazy loading, almost the same performance)
